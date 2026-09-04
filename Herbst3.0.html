@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Dein Herbst-Check – Die Oile</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #F8F4EE;
+      --text-main: #3D2B1F;
+      --accent-pumpkin: #C85A17;
+      --accent-green: #5B7053;
+      --accent-light: rgba(239, 228, 215, 0.8);
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+      user-select: none; 
+    }
+    
+    body { 
+      background-image: url('background.jpg'), url('background.jpg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      background-size: contain;
+      background-color: var(--bg-color);
+      color: var(--text-main); 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      padding: 20px 15px; 
+    }
+    
+    header { 
+      text-align: center; 
+      padding: 10px 0 15px 0; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .brand-logo {
+      max-height: 240px;
+      width: auto;
+      margin-bottom: 8px;
+      object-fit: contain;
+      filter: drop-shadow(0px 2px 4px rgba(255,255,255,0.8));
+    }
+
+    header h1 { 
+      font-family: 'Playfair Display', Georgia, serif; 
+      font-size: 1.8rem; 
+      font-weight: 700; 
+      letter-spacing: 1.5px; 
+      color: var(--accent-pumpkin); 
+      text-shadow: 0px 1px 3px rgba(255,255,255,0.9);
+    }
+    
+    .screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; }
+    .active { display: flex; }
+
+    /* HAUPTKARTE OHNE KASTEN/HINTERGRUND */
+    .card {
+      background: transparent; 
+      padding: 10px 5px; 
+      max-width: 600px; 
+      width: 100%; 
+      text-align: left;
+    }
+
+    h2 { 
+      font-family: 'Playfair Display', Georgia, serif; 
+      font-size: 1.5rem; 
+      margin-bottom: 8px; 
+      font-weight: 600; 
+      color: var(--text-main);
+      text-align: center;
+      text-shadow: 0px 1px 2px rgba(255,255,255,0.8);
+    }
+    p.sub { font-size: 1rem; margin-bottom: 20px; color: #5D4638; text-align: center; line-height: 1.4; text-shadow: 0px 1px 2px rgba(255,255,255,0.8); }
+
+    .check-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    
+    /* LEICHT LESBARE BUTTONS FÜR AUSWAHL */
+    .check-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.85); 
+      border: 1px solid var(--accent-light);
+      padding: 14px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(61, 43, 31, 0.04);
+      transition: all 0.2s ease-in-out;
+    }
+    .check-item:hover {
+      border-color: var(--accent-pumpkin);
+      background: #FFFFFF;
+    }
+    .check-item input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--accent-pumpkin);
+      margin-right: 14px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .check-item label { font-size: 1.05rem; color: var(--text-main); cursor: pointer; width: 100%; font-weight: 500; }
+
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; font-size: 0.95rem; color: var(--accent-pumpkin); margin-bottom: 6px; font-weight: 700; }
+    .input-group input[type="text"] { 
+      width: 100%; 
+      padding: 14px 16px; 
+      border: 1px solid var(--accent-light); 
+      border-radius: 12px; 
+      font-size: 1.05rem; 
+      outline: none; 
+      background: rgba(255, 255, 255, 0.9); 
+      transition: border-color 0.2s;
+    }
+    .input-group input[type="text"]:focus {
+      border-color: var(--accent-pumpkin);
+      background: #FFFFFF;
+    }
+
+    .submit-btn { 
+      width: 100%; 
+      background: var(--accent-pumpkin); 
+      color: #FFFFFF; 
+      border: none; 
+      padding: 16px; 
+      border-radius: 14px; 
+      font-size: 1.15rem; 
+      font-weight: 700; 
+      cursor: pointer; 
+      margin-top: 10px; 
+      box-shadow: 0 4px 15px rgba(200, 90, 23, 0.25);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .submit-btn:active {
+      transform: scale(0.99);
+    }
+
+    /* QR-CODE VÖLLIG OHNE KASTEN */
+    .qr-card {
+      margin-top: 20px;
+      background: transparent; 
+      padding: 10px;
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .qr-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .qr-mini-logo {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0px 1px 2px rgba(255,255,255,0.8));
+    }
+
+    .qr-text-box {
+      text-align: left;
+    }
+
+    .qr-text-box strong {
+      display: block;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      font-weight: 700;
+      margin-bottom: 2px;
+      text-shadow: 0px 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .qr-text-box p {
+      font-size: 0.95rem;
+      color: #5D4638;
+      line-height: 1.3;
+      text-shadow: 0px 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .qr-image {
+      width: 320px;
+      max-width: 85%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 16px;
+      padding: 10px;
+      background: #FFFFFF; 
+      box-shadow: 0 4px 15px rgba(61, 43, 31, 0.1);
+    }
+
+    .gift-card {
+      background: rgba(253, 249, 243, 0.9);
+      border: 2px dashed var(--accent-green);
+      padding: 20px;
+      border-radius: 16px;
+      margin-top: 15px;
+    }
+    .gift-card h4 { 
+      color: var(--accent-green); 
+      font-family: 'Playfair Display', Georgia, serif; 
+      font-size: 1.25rem; 
+      margin-bottom: 12px; 
+    }
+    .gift-card ul { padding-left: 18px; line-height: 1.5; font-size: 0.95rem; }
+    .gift-card li { margin-bottom: 8px; }
+
+    .status-bar {
+      position: fixed;
+      bottom: 10px;
+      left: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .reset-btn, .sync-btn { 
+      background: rgba(255, 255, 255, 0.8); 
+      border: 1px solid #D1C5BC; 
+      padding: 6px 12px; 
+      border-radius: 8px; 
+      color: #666; 
+      font-size: 0.8rem; 
+      cursor: pointer; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* SPECIELLER KIOSK-APP DARK MODE PROTECTION TRICK */
+    @media (prefers-color-scheme: dark) {
+      html {
+        filter: invert(1) hue-rotate(180deg) !important;
+        background-color: #070B11 !important;
+      }
+
+      img, svg, .qr-image, .brand-logo, .qr-mini-logo {
+        filter: invert(1) hue-rotate(180deg) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <header>
+    <img src="logo.png" alt="Die Oile Logo" class="brand-logo" onerror="this.onerror=null; this.src='logo.png.png';">
+    <h1>DEIN KOSTENLOSER HERBST-CHECK</h1>
+  </header>
+
+  <div id="step-start" class="screen active">
+    <div class="card">
+      <h2>Was brauchst du gerade am meistem?</h2>
+      <p class="sub">Wähle deine Wünsche aus für deine persönliche Empfehlung von Nina:</p>
+
+      <div class="check-list">
+        <div class="check-item"><input type="checkbox" id="c1" value="mehr Energie und Versorgung"><label for="c1">⚡ mehr Energie und Versorgung</label></div>
+        <div class="check-item"><input type="checkbox" id="c2" value="eine einfache Familienroutine"><label for="c2">👨‍👩‍👧 eine einfache Familienroutine</label></div>
+        <div class="check-item"><input type="checkbox" id="c3" value="Ruhe und emotionale Balance"><label for="c3">🧘 Ruhe und emotionale Balance</label></div>
+        <div class="check-item"><input type="checkbox" id="c4" value="Unterstützung für Verdauung und Wohlbefinden"><label for="c4">🌿 Unterstützung für Verdauung & Wohlbefinden</label></div>
+        <div class="check-item"><input type="checkbox" id="c5" value="einen persönlichen Duftanker"><label for="c5">🌸 einen persönlichen Duftanker</label></div>
+      </div>
+
+      <button class="submit-btn" onclick="saveCheckAndNext()">Weiter zum Formular →</button>
+    </div>
+
+    <div class="qr-card">
+      <div class="qr-card-header">
+        <img src="logo.png" alt="Die Oile Logo" class="qr-mini-logo" onerror="this.onerror=null; this.src='logo.png.png';">
+        <div class="qr-text-box">
+          <strong>Neugierig?</strong>
+          <p>Scanne den QR-Code, um uns auf unserer Reise zu begleiten</p>
+        </div>
+      </div>
+      <img src="qrcode.png" alt="QR Code" class="qr-image" onerror="this.onerror=null; this.src='qrcode.png.png';">
+    </div>
+  </div>
+
+  <div id="step-form" class="screen">
+    <div class="card">
+      <h2>Deine persönliche Empfehlung</h2>
+      <p class="sub">Wohin darf Nina dir deine Auswertung senden?</p>
+
+      <form id="custom-form" action="https://docs.google.com/forms/d/e/1FAIpQLSfxBpYLtNjnF8ji89pQGRVBwNuWwQgZ8uDzcmkgxtd-hgcSYQ/formResponse" method="POST" target="hidden_iframe" onsubmit="handleFormSubmit(event)">
+        
+        <input type="hidden" id="entry_wishes" name="entry.502606710" value="">
+
+        <div class="input-group">
+          <label>Vorname *</label>
+          <input type="text" id="vorname" name="entry.1772497382" placeholder="Dein Vorname" required>
+        </div>
+
+        <div class="input-group">
+          <label>E-Mail-Adresse / WhatsApp *</label>
+          <input type="text" id="kontakt" name="entry.946169" placeholder="E-Mail oder Mobilnummer" required>
+        </div>
+
+        <label style="display:block; font-size:0.95rem; color:var(--accent-pumpkin); margin:15px 0 8px 0; font-weight:700;">Was interessiert dich zusätzlich?</label>
+        <div class="check-list" style="gap:8px;">
+          <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i1" name="entry.2032482757" value="Herbst-Wellness"><label for="i1">Herbst-Wellness</label></div>
+          <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i2" name="entry.2032482757" value="Öl des Lebens"><label for="i2">Öl des Lebens</label></div>
+          <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i3" name="entry.2032482757" value="Omega-Test"><label for="i3">Omega-Test</label></div>
+          <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i4" name="entry.2032482757" value="DIY und ätherische Öle"><label for="i4">DIY und ätherische Öle</label></div>
+          <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i5" name="entry.2032482757" value="Einkaufsmöglichkeiten"><label for="i5">Einkaufsmöglichkeiten</label></div>
+        </div>
+
+        <div class="check-item" style="background:none; border:none; padding:5px 0; box-shadow:none;">
+          <input type="checkbox" id="consent_contact" name="entry.1771498423" value="Ja, ich erlaube Nina das Sie Kontakt zu mir aufnehmen darf." required checked>
+          <label for="consent_contact" style="font-size:0.88rem; line-height:1.3; font-weight:normal;">Ja, ich erlaube Nina, dass sie Kontakt zu mir aufnehmen darf. *</label>
+        </div>
+
+        <div class="check-item" style="background:none; border:none; padding:5px 0; margin-bottom:10px; box-shadow:none;">
+          <input type="checkbox" id="consent_newsletter" name="entry.532869396" value="Ja, ich möchte gelegentlich Tipps und Informationen von Nina erhalten!">
+          <label for="consent_newsletter" style="font-size:0.88rem; line-height:1.3; color:#666; font-weight:normal;">(Optional) Ja, ich möchte gelegentlich Tipps und Informationen von Nina erhalten!</label>
+        </div>
+
+        <button type="submit" class="submit-btn">Absenden & Geschenk anzeigen 🎁</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="step-thanks" class="screen">
+    <div class="card" style="text-align:center;">
+      <h2 style="color:var(--accent-pumpkin);">Vielen Dank! ❤️</h2>
+      <p id="thanks-note" style="font-size:1rem; margin-top:5px; color:#555;">Deine Angaben wurden erfolgreich übermittelt. Wir haben dir deine 3 Herbst-Rituale zusätzlich soeben per E-Mail geschickt!</p>
+
+      <div class="gift-card" style="text-align:left;">
+        <h4>🎁 Deine 3 einfachen Herbst-Rituale für Zuhause</h4>
+        <ul>
+          <li><strong>1. Guten-Morgen-Duftanker:</strong> Gib 1 Tropfen Wild Orange in deine Handflächen, verreibe es kurz und atme morgens 3 tiefe Züge während deiner Morgenroutine.</li>
+          <li><strong>2. Gemütliche Abend-Routine:</strong> Diffusiere 3 Tr. On Guard + 2 Tr. Frankincense im Wohnzimmer für ein warmes Geborgenheitsgefühl.</li>
+          <li><strong>3. Fußsohlen-Ritual:</strong> Vor dem Schlafengehen die Fußsohlen mit etwas warmem Kokosöl und Lavendel einmassieren.</li>
+        </ul>
+      </div>
+
+      <button class="submit-btn" style="margin-top:20px; background:var(--accent-green);" onclick="resetApp()">Neuen Check starten</button>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <button class="reset-btn" onclick="resetApp()">↺ Neustart</button>
+    <button class="sync-btn" onclick="syncOfflineData()">💾 Offline (<span id="offline-count">0</span>)</button>
+  </div>
+
+  <script>
+    const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfxBpYLtNjnF8ji89pQGRVBwNuWwQgZ8uDzcmkgxtd-hgcSYQ/formResponse";
+    let selectedNeeds = [];
+
+    window.addEventListener('load', () => {
+      updateOfflineCounter();
+      if (navigator.onLine) {
+        syncOfflineData();
+      }
+    });
+
+    window.addEventListener('online', syncOfflineData);
+
+    function goTo(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('step-' + screenId).classList.add('active');
+    }
+
+    function saveCheckAndNext() {
+      selectedNeeds = [];
+      for (let i = 1; i <= 5; i++) {
+        let cb = document.getElementById('c' + i);
+        if (cb && cb.checked) {
+          selectedNeeds.push(cb.value);
+        }
+      }
+
+      if (selectedNeeds.length === 0) {
+        alert("Bitte wähle mindestens einen Punkt aus!");
+        return;
+      }
+
+      document.getElementById('entry_wishes').value = selectedNeeds.join(", ");
+      goTo('form');
+    }
+
+    function handleFormSubmit(e) {
+      if (!navigator.onLine) {
+        e.preventDefault();
+        saveDataLocally();
+        document.getElementById('thanks-note').innerText = "Dein Check wurde lokal auf dem Gerät gespeichert! Sobald wieder Internetverbindung besteht, wird er automatisch übermittelt.";
+        goTo('thanks');
+        setTimeout(resetApp, 90000);
+        return;
+      }
+
+      document.getElementById('thanks-note').innerText = "Deine Angaben wurden erfolgreich übermittelt. Wir haben dir deine 3 Herbst-Rituale zusätzlich soeben per E-Mail geschickt!";
+      setTimeout(() => {
+        goTo('thanks');
+      }, 400);
+
+      setTimeout(resetApp, 90000);
+    }
+
+    function saveDataLocally() {
+      const form = document.getElementById('custom-form');
+      const formData = new FormData(form);
+      const dataObj = {};
+
+      for (let [key, value] of formData.entries()) {
+        if (dataObj[key]) {
+          if (!Array.isArray(dataObj[key])) {
+            dataObj[key] = [dataObj[key]];
+          }
+          dataObj[key].push(value);
+        } else {
+          dataObj[key] = value;
+        }
+      }
+
+      let offlineSubmissions = JSON.parse(localStorage.getItem('offline_submissions') || "[]");
+      offlineSubmissions.push(dataObj);
+      localStorage.setItem('offline_submissions', JSON.stringify(offlineSubmissions));
+
+      updateOfflineCounter();
+    }
+
+    function updateOfflineCounter() {
+      let offlineSubmissions = JSON.parse(localStorage.getItem('offline_submissions') || "[]");
+      document.getElementById('offline-count').innerText = offlineSubmissions.length;
+    }
+
+    function syncOfflineData() {
+      let offlineSubmissions = JSON.parse(localStorage.getItem('offline_submissions') || "[]");
+      
+      if (offlineSubmissions.length === 0) {
+        return;
+      }
+
+      if (!navigator.onLine) {
+        alert("Das Gerät ist aktuell noch offline.");
+        return;
+      }
+
+      let promises = offlineSubmissions.map(data => {
+        let formBody = [];
+        for (let property in data) {
+          let encodedKey = encodeURIComponent(property);
+          if (Array.isArray(data[property])) {
+            data[property].forEach(val => {
+              formBody.push(encodedKey + "=" + encodeURIComponent(val));
+            });
+          } else {
+            let encodedValue = encodeURIComponent(data[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+          }
+        }
+        formBody = formBody.join("&");
+
+        return fetch(FORM_ACTION_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: formBody
+        });
+      });
+
+      Promise.all(promises).then(() => {
+        localStorage.removeItem('offline_submissions');
+        updateOfflineCounter();
+        alert("Alle offline gespeicherten Datensätze wurden erfolgreich an Google übermittelt!");
+      }).catch(err => {
+        console.error("Fehler beim Synchronisieren:", err);
+      });
+    }
+
+    function resetApp() {
+      document.getElementById('custom-form').reset();
+      for (let i = 1; i <= 5; i++) {
+        let cb = document.getElementById('c' + i);
+        if (cb) cb.checked = false;
+      }
+      goTo('start');
+    }
+  </script>
+</body>
+</html>
