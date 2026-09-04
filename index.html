@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="color-scheme" content="light dark">
-  <meta name="supported-color-schemes" content="light dark">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Dein Herbst-Check – Die Oile</title>
   
@@ -95,21 +93,20 @@
 
     .check-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
     
-    /* LEICHT LESBARE BUTTONS FÜR AUSWAHL */
     .check-item {
       display: flex;
       align-items: center;
-      background: rgba(255, 255, 255, 0.85); 
-      border: 1px solid var(--accent-light);
+      background: rgba(0, 0, 0, 0.4); 
+      border: 1px solid rgba(200, 90, 23, 0.4);
       padding: 14px 16px;
       border-radius: 14px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(61, 43, 31, 0.04);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       transition: all 0.2s ease-in-out;
     }
     .check-item:hover {
       border-color: var(--accent-pumpkin);
-      background: #FFFFFF;
+      background: rgba(0, 0, 0, 0.6);
     }
     .check-item input[type="checkbox"] {
       width: 22px;
@@ -119,28 +116,42 @@
       flex-shrink: 0;
       cursor: pointer;
     }
-    .check-item label { font-size: 1.05rem; color: var(--text-main); cursor: pointer; width: 100%; font-weight: 500; }
+    .check-item label { font-size: 1.05rem; color: #FFFFFF; cursor: pointer; width: 100%; font-weight: 500; }
 
     .input-group { margin-bottom: 15px; }
     .input-group label { display: block; font-size: 0.95rem; color: var(--accent-pumpkin); margin-bottom: 6px; font-weight: 700; }
     
-    /* STARKER FIX FÜR DIE EINGABEFELDER IM KIOSK-DARKMODE */
-    .input-group input[type="text"], input, textarea, select { 
-      width: 100%; 
-      padding: 14px 16px; 
-      border-radius: 12px; 
-      font-size: 1.05rem; 
-      outline: none; 
-      background-color: #000000 !important; /* Wird durch App-Invertierung zu strahlendem Weiß */
-      color: #FFFFFF !important;            /* Wird durch App-Invertierung zu dunkler gut lesbarer Schrift */
-      -webkit-text-fill-color: #FFFFFF !important;
-      border: 2px solid #C85A17 !important;
+    /* DUNKELES DESIGN MIT WEISSER SCHRIFT */
+    .input-group input[type="text"], 
+    input[type="text"], 
+    textarea { 
+      width: 100% !important; 
+      padding: 14px 16px !important; 
+      border-radius: 12px !important; 
+      font-size: 1.05rem !important; 
+      outline: none !important; 
+      background: rgba(0, 0, 0, 0.6) !important; 
+      background-color: rgba(0, 0, 0, 0.6) !important;
+      color: #FFFFFF !important; 
+      -webkit-text-fill-color: #FFFFFF !important; 
+      border: 2px solid var(--accent-pumpkin) !important;
       font-weight: 600 !important;
+      opacity: 1 !important;
+      caret-color: #FFFFFF !important;
+    }
+
+    .input-group input[type="text"]:focus {
+      background: rgba(0, 0, 0, 0.8) !important;
+      background-color: rgba(0, 0, 0, 0.8) !important;
+      color: #FFFFFF !important;
+      -webkit-text-fill-color: #FFFFFF !important;
+      box-shadow: 0 0 10px rgba(200, 90, 23, 0.5) !important;
     }
     
     .input-group input[type="text"]::placeholder, input::placeholder {
-      color: #AAAAAA !important;
-      -webkit-text-fill-color: #AAAAAA !important;
+      color: rgba(255, 255, 255, 0.6) !important;
+      -webkit-text-fill-color: rgba(255, 255, 255, 0.6) !important;
+      opacity: 1 !important;
     }
 
     .submit-btn { 
@@ -154,7 +165,7 @@
       font-weight: 700; 
       cursor: pointer; 
       margin-top: 10px; 
-      box-shadow: 0 4px 15px rgba(200, 90, 23, 0.25);
+      box-shadow: 0 4px 15px rgba(200, 90, 23, 0.3);
       transition: background 0.2s, transform 0.1s;
     }
     .submit-btn:active {
@@ -223,14 +234,15 @@
     }
 
     .gift-card {
-      background: rgba(253, 249, 243, 0.9);
+      background: rgba(0, 0, 0, 0.5);
       border: 2px dashed var(--accent-green);
       padding: 20px;
       border-radius: 16px;
       margin-top: 15px;
+      color: #FFFFFF;
     }
     .gift-card h4 { 
-      color: var(--accent-green); 
+      color: #88C070; 
       font-family: 'Playfair Display', Georgia, serif; 
       font-size: 1.25rem; 
       margin-bottom: 12px; 
@@ -247,26 +259,14 @@
     }
 
     .reset-btn, .sync-btn { 
-      background: rgba(255, 255, 255, 0.8); 
-      border: 1px solid #D1C5BC; 
+      background: rgba(0, 0, 0, 0.6); 
+      border: 1px solid var(--accent-pumpkin); 
       padding: 6px 12px; 
       border-radius: 8px; 
-      color: #666; 
+      color: #FFFFFF; 
       font-size: 0.8rem; 
       cursor: pointer; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    /* SPEZIELLER KIOSK-APP DARK MODE PROTECTION TRICK */
-    @media (prefers-color-scheme: dark) {
-      html {
-        filter: invert(1) hue-rotate(180deg) !important;
-        background-color: #070B11 !important;
-      }
-
-      img, svg, .qr-image, .brand-logo, .qr-mini-logo {
-        filter: invert(1) hue-rotate(180deg) !important;
-      }
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -335,12 +335,12 @@
           <div class="check-item" style="padding:10px 14px;"><input type="checkbox" id="i5" name="entry.2032482757" value="Einkaufsmöglichkeiten"><label for="i5">Einkaufsmöglichkeiten</label></div>
         </div>
 
-        <div class="check-item" style="background:rgba(255, 255, 255, 0.85); border:1px solid var(--accent-light); padding:10px 14px; margin-top:10px;">
+        <div class="check-item" style="padding:10px 14px; margin-top:10px;">
           <input type="checkbox" id="consent_contact" name="entry.1771498423" value="Ja, ich erlaube Nina das Sie Kontakt zu mir aufnehmen darf." required checked>
           <label for="consent_contact" style="font-size:0.88rem; line-height:1.3; font-weight:normal;">Ja, ich erlaube Nina, dass sie Kontakt zu mir aufnehmen darf. *</label>
         </div>
 
-        <div class="check-item" style="background:rgba(255, 255, 255, 0.85); border:1px solid var(--accent-light); padding:10px 14px; margin-top:8px; margin-bottom:10px;">
+        <div class="check-item" style="padding:10px 14px; margin-top:8px; margin-bottom:10px;">
           <input type="checkbox" id="consent_newsletter" name="entry.532869396" value="Ja, ich möchte gelegentlich Tipps und Informationen von Nina erhalten!">
           <label for="consent_newsletter" style="font-size:0.88rem; line-height:1.3; font-weight:normal;">(Optional) Ja, ich möchte gelegentlich Tipps und Informationen von Nina erhalten!</label>
         </div>
@@ -353,7 +353,7 @@
   <div id="step-thanks" class="screen">
     <div class="card" style="text-align:center;">
       <h2 style="color:var(--accent-pumpkin);">Vielen Dank! ❤️</h2>
-      <p id="thanks-note" style="font-size:1rem; margin-top:5px; color:#555;">Deine Angaben wurden erfolgreich übermittelt. Wir haben dir deine 3 Herbst-Rituale zusätzlich soeben per E-Mail geschickt!</p>
+      <p id="thanks-note" style="font-size:1rem; margin-top:5px; color:#DDD;">Deine Angaben wurden erfolgreich übermittelt. Wir haben dir deine 3 Herbst-Rituale zusätzlich soeben per E-Mail geschickt!</p>
 
       <div class="gift-card" style="text-align:left;">
         <h4>🎁 Deine 3 einfachen Herbst-Rituale für Zuhause</h4>
